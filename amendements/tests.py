@@ -3,6 +3,7 @@ import shutil
 import tempfile
 
 import docx
+from docx.enum.text import WD_COLOR_INDEX
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -39,6 +40,7 @@ def make_docx(rows=2):
             table.cell(r, i).text = value
     run = document.add_paragraph().add_run('نص ملون')
     run.bold = True
+    run.font.highlight_color = WD_COLOR_INDEX.YELLOW
     buffer = io.BytesIO()
     document.save(buffer)
     return buffer.getvalue()
@@ -85,6 +87,7 @@ class AmendementsTests(TestCase):
         fichier = self._upload()
         self.assertIn('<table', fichier.extracted_content)
         self.assertIn('font-weight:bold', fichier.extracted_content)
+        self.assertIn('background-color:#FFFF00', fichier.extracted_content)
         self.assertEqual(Amendement.objects.filter(fichier=fichier).count(), 3)
 
     def test_upload_rejects_non_docx(self):

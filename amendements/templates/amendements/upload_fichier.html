@@ -20,7 +20,7 @@
         <td>{{ fichier.fichier.name|cut:'amendements_uploads/' }}</td>
         <td>{{ fichier.date_upload|date:"d/m/Y H:i" }}</td>
         <td>
-          <form method="post" action="{% url 'supprimer_fichier_amendement' fichier.id %}" style="display:inline;" onsubmit="return confirm('Supprimer ce fichier ?');">{% csrf_token %}<button type="submit" class="link-btn">Supprimer</button></form>
+          <form method="post" action="{% url 'supprimer_fichier_amendement' fichier.id %}" class="inline-form" onsubmit="return confirm('Supprimer ce fichier ?');">{% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">Supprimer</button></form>
         </td>
       </tr>
       {% endfor %}

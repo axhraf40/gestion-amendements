@@ -31,7 +31,7 @@ def is_nested_table(table, doc):
 if __name__ == "__main__":
     import sys
     if len(sys.argv) < 2:
-        print("Usage: python extract_tables_debug.py chemin/vers/fichier.docx")
+        print("Usage: python scripts/inspect_docx_tables.py chemin/vers/fichier.docx")
         sys.exit(1)
     docx_path = sys.argv[1]
     doc = Document(docx_path)

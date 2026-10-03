@@ -11,7 +11,7 @@ from amendements.models import AmendementFichier
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python extract_html_debug.py <fichier_id>")
+        print("Usage: python scripts/show_extracted_html.py <fichier_id>")
         sys.exit(1)
     fichier_id = int(sys.argv[1])
     try:

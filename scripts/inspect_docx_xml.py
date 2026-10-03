@@ -14,7 +14,7 @@ def print_tables_xml(element, level=0):
 if __name__ == "__main__":
     import sys
     if len(sys.argv) < 2:
-        print("Usage: python extract_tables_xml_debug.py chemin/vers/fichier.docx")
+        print("Usage: python scripts/inspect_docx_xml.py chemin/vers/fichier.docx")
         sys.exit(1)
     docx_path = sys.argv[1]
     # Ouvrir le fichier docx comme une archive zip

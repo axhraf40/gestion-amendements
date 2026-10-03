@@ -19,7 +19,7 @@
       <td>
         <a href="{% url 'fichier_mammoth' fichier.id %}">Voir le contenu extrait</a> |
         <a href="{% url 'modifier_fichier_extrait' fichier.id %}" class="btn btn-warning btn-sm">Modifier</a> |
-        <form method="post" action="{% url 'supprimer_fichier_amendement' fichier.id %}" style="display:inline;" onsubmit="return confirm('Supprimer ce fichier ?');">{% csrf_token %}<button type="submit" class="link-btn">Supprimer</button></form> |
+        <form method="post" action="{% url 'supprimer_fichier_amendement' fichier.id %}" class="inline-form" onsubmit="return confirm('Supprimer ce fichier ?');">{% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">Supprimer</button></form> |
         <a href="{% url 'export_pdf_amendement' fichier.id %}" class="btn btn-info btn-sm">Télécharger PDF</a>
       </td>
     </tr>

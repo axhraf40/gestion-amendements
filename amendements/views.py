@@ -141,7 +141,7 @@ def run_to_html(run):
                 'NONE': '',
                 'AUTO': '',
             }
-            color_name = str(highlight)
+            color_name = getattr(highlight, 'name', str(highlight))
             if color_name in highlight_map and highlight_map[color_name]:
                 style += f'background-color:{highlight_map[color_name]};'
     text = run.text.replace('\n', '<br>')

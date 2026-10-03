@@ -597,13 +597,19 @@ footer {
     width: 100%;
   }
 } 
-/* Delete action rendered as a POST form, styled like a link */
-.link-btn {
+/* Delete action: a small POST form shown inline in the actions column */
+form.inline-form {
+  display: inline;
   background: none;
-  border: none;
   padding: 0;
-  color: inherit;
-  text-decoration: underline;
-  cursor: pointer;
-  font: inherit;
+  margin: 0;
+  box-shadow: none;
+  max-width: none;
+}
+form.inline-form .btn-danger {
+  background: #c0392b;
+  margin: 0;
+}
+form.inline-form .btn-danger:hover {
+  background: #a93226;
 }
