@@ -1,0 +1,27 @@
+{% extends 'charge_amendements/base.html' %}
+{% block content %}
+  <h2>Charger un fichier Word d'amendement</h2>
+  {% if error %}
+    <div class="alert alert-danger" style="color:red; text-align:center; margin-bottom:15px;">{{ error }}</div>
+  {% endif %}
+  <div class="form-card">
+    <form method="post" enctype="multipart/form-data" id="uploadForm">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Charger</button>
+      <button type="button" onclick="resetFileInput()">Réinitialiser</button>
+    </form>
+    <p style="margin-top:10px;color:#555;">Si vous sélectionnez un nouveau fichier, il remplacera le précédent avant validation.</p>
+  </div>
+  <div style="margin-top:20px;">
+    <a href="{% url 'fichiers_amendements' %}" class="btn btn-primary">Mes fichiers</a>
+  </div>
+  <script>
+    function resetFileInput() {
+      const fileInput = document.querySelector('input[type="file"]');
+      if (fileInput) {
+        fileInput.value = '';
+      }
+    }
+  </script>
+{% endblock %} 

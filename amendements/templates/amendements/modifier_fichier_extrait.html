@@ -1,0 +1,49 @@
+{% extends 'charge_amendements/base.html' %}
+{% block content %}
+  <h2>Modifier le contenu extrait</h2>
+  <div style="margin-bottom:20px;">
+    <strong>Fichier :</strong> {{ fichier.fichier.name|cut:'amendements_uploads/' }}
+  </div>
+  <form method="post" style="margin-top:20px;">
+    {% csrf_token %}
+    <textarea id="wysiwyg-editor" name="extracted_content" rows="25" style="width:100%;font-family:monospace;font-size:1em;">{{ extracted_content }}</textarea>
+    <div style="margin-top:20px;">
+      <button type="submit" class="btn btn-success">Enregistrer les modifications</button>
+      <a href="{% url 'fichier_mammoth' fichier.id %}" class="btn btn-secondary">Annuler</a>
+    </div>
+  </form>
+  <!-- TinyMCE CDN open source -->
+  <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js"></script>
+  <script>
+    tinymce.init({
+      selector: '#wysiwyg-editor',
+      language: 'fr_FR',
+      height: 600,
+      plugins: 'lists link table code directionality',
+      toolbar: 'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | ltr rtl | table | code',
+      menubar: false,
+      directionality: 'rtl',
+      content_style: 'body { font-family: DejaVu Sans, Arial, sans-serif; }',
+      valid_elements: '*[*]',
+      valid_styles: {
+        '*': 'color,background-color,font-weight,font-style,text-decoration,text-align,direction'
+      },
+      convert_fonts_to_spans: true,
+      forced_root_block: false,
+      entity_encoding: 'raw',
+      relative_urls: false,
+      remove_script_host: false,
+      branding: false
+    });
+    // Forcer l'activation du champ si jamais il est désactivé ou readonly
+    document.addEventListener('DOMContentLoaded', function() {
+      var textarea = document.getElementById('wysiwyg-editor');
+      if (textarea) {
+        textarea.removeAttribute('readonly');
+        textarea.removeAttribute('disabled');
+        textarea.style.pointerEvents = 'auto';
+        textarea.style.background = '#fff';
+      }
+    });
+  </script>
+{% endblock %} 

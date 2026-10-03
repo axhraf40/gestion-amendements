@@ -1,0 +1,28 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install system libraries for WeasyPrint
+        run: sudo apt-get update && sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0 fonts-noto-core
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Django checks
+        env:
+          DJANGO_DEBUG: "True"
+        run: |
+          python manage.py check
+          python manage.py makemigrations --check --dry-run
+      - name: Run tests
+        env:
+          DJANGO_DEBUG: "True"
+        run: python manage.py test

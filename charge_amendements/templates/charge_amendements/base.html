@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Chargement structuré des amendements</title>
+    <link rel="stylesheet" href="{% static 'charge_amendements/style.css' %}">
+</head>
+<body>
+    <div class="header" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2.5em 0 1.5em 0; background: var(--white); border-bottom: 2px solid #e0e0e0;">
+         <img src="{% static 'charge_amendements/logo.svg' %}" alt="Logo" class="logo-large">
+         <h1 style="margin-top: 1em;">Chargement structuré des amendements</h1>
+      </div>
+    
+    <nav class="navbar">
+        <div class="nav-container" style="align-items: center;">
+            <a href="{% url 'home' %}" class="nav-link">Accueil</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'upload_amendement' %}" class="nav-link">Charger un amendement</a>
+                <a href="{% url 'stats_dashboard' %}" class="nav-link">Statistiques</a>
+                <a href="{% url 'profile' %}" class="nav-link">Profil</a>
+                <form method="post" action="{% url 'logout' %}" style="display:inline; margin:0; padding:0; background:none; border:none;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn" style="margin:0;">Déconnexion</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-link">Connexion</a>
+            {% endif %}
+        </div>
+    </nav>
+    
+    <div class="container">
+        {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html> 

@@ -1,0 +1,15 @@
+u => u
+strike => s
+b => strong
+i => em
+color #ff0000 => span.red
+color #0000ff => span.blue
+color #008000 => span.green
+color #FFA500 => span.orange
+color #800080 => span.purple
+color #FFFF00 => span.yellow 
+  @font-face {
+      font-family: 'Amiri';
+      src: url('C:/Windows/Fonts/Amiri-Regular.ttf');
+  }
+  body { font-family: 'Amiri', 'Arial', 'Tahoma', sans-serif; } 

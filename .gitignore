@@ -1,0 +1,38 @@
+# --- Secrets & local config (never commit) ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.*
+local_settings.py
+
+# --- Databases & user data ---
+db.sqlite3
+db.sqlite3-journal
+*.sqlite3
+media/
+amendements_uploads/
+*.docx
+*.pdf
+
+# --- Django build output ---
+staticfiles/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

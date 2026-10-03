@@ -1,0 +1,12 @@
+{% extends 'charge_amendements/base.html' %}
+{% block content %}
+  <div class="card" style="max-width: 420px; margin: 4em auto; text-align: center; box-shadow: 0 4px 24px rgba(44,62,80,0.10);">
+    <div style="font-size: 3em; color: var(--success); margin-bottom: 0.5em;">&#10003;</div>
+    <h2 style="margin-bottom: 0.5em; color: var(--main-color);">Déconnexion réussie</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 2em;">Vous avez été déconnecté avec succès.</p>
+    <div style="display: flex; flex-direction: column; gap: 1em; align-items: center;">
+      <a class="btn" href="{% url 'login' %}">Se reconnecter</a>
+      <a class="btn" href="/">Retour à l'accueil</a>
+    </div>
+  </div>
+{% endblock %} 

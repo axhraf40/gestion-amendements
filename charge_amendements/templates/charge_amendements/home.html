@@ -1,0 +1,27 @@
+{% extends 'charge_amendements/base.html' %}
+{% load static %}
+{% block content %}
+  <div class="container">
+    <div class="card" style="max-width: 500px; margin: 3em auto; text-align: center;">
+      <img src="{% static 'charge_amendements/logo.svg' %}" alt="Logo" style="max-width: 120px; margin-bottom: 1.5em; border-radius: 12px; box-shadow: 0 2px 8px rgba(44,62,80,0.08);">
+      <h1 style="margin-bottom: 1em;">Bienvenue sur le système de gestion des amendements</h1>
+      {% if user.is_authenticated %}
+        <p style="font-size: 1.1em; color: var(--text-secondary); margin-bottom: 2em;">Bonjour <strong>{{ user.username }}</strong> !</p>
+        <div style="display: flex; flex-direction: column; gap: 1em; align-items: center;">
+          <a class="btn" href="{% url 'upload_amendement' %}">Charger un amendement</a>
+          <a class="btn" href="{% url 'stats_dashboard' %}">Statistiques</a>
+          <a class="btn" href="{% url 'profile' %}">Mon profil</a>
+          <form method="post" action="{% url 'logout' %}" style="width:100%;">
+            {% csrf_token %}
+            <button type="submit" class="btn" style="width:100%;">Déconnexion</button>
+          </form>
+        </div>
+      {% else %}
+        <p style="font-size: 1.1em; color: var(--text-secondary); margin-bottom: 2em;">Veuillez vous connecter pour accéder aux fonctionnalités.</p>
+        <div style="display: flex; flex-direction: column; gap: 1em; align-items: center;">
+          <a class="btn" href="{% url 'login' %}">Connexion</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %} 

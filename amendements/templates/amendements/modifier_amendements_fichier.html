@@ -1,0 +1,35 @@
+{% extends 'charge_amendements/base.html' %}
+{% block content %}
+  <h2>Modifier les amendements extraits du fichier</h2>
+  <p>Fichier : <a href="{{ fichier.fichier.url }}">{{ fichier.fichier.name|cut:'amendements_uploads/' }}</a></p>
+  {% if debug_amendements %}
+    <div style="margin:20px 0; color: #b00;">
+      <h4>Debug : Amendements trouvés pour ce fichier</h4>
+      <ul>
+        {% for amend in debug_amendements %}
+          <li>ID: {{ amend.id }} | Numéro: {{ amend.numero_modification }} | Article: {{ amend.numero_article }} | Fichier: {{ amend.fichier_id }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    <table style="width:100%;margin-top:20px;">
+      <tr>
+        {% for field in formset.forms.0.visible_fields %}
+          <th>{{ field.label }}</th>
+        {% endfor %}
+      </tr>
+      {% for form in formset %}
+        <tr>
+          {% for field in form.visible_fields %}
+            <td>{{ field }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </table>
+    <button type="submit">Enregistrer les modifications</button>
+    <a href="{% url 'fichiers_amendements' %}">Annuler</a>
+  </form>
+{% endblock %} 

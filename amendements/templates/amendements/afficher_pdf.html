@@ -1,0 +1,10 @@
+{% extends 'charge_amendements/base.html' %}
+{% block content %}
+  <h2 style="text-align:center; direction:rtl;">معاينة الملف PDF</h2>
+  <div style="margin-bottom:20px; text-align:center; direction:rtl;">
+    <strong>الملف المحمل :</strong> {{ fichier_obj.fichier.name|cut:'amendements_uploads/' }}
+  </div>
+  <div style="display:flex; justify-content:center;">
+    <iframe src="{{ pdf_url }}" width="90%" height="900px" style="border:1px solid #888; border-radius:8px; background:#fff;"></iframe>
+  </div>
+{% endblock %} 

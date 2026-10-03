@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Extrait Amendement PDF</title>
+    <style>
+        @page { size: A4 landscape; }
+        @font-face {
+            font-family: 'DejaVu Sans';
+            src: url('file:///C:/Users/kh/Desktop/stage/stage/amendements/static/fonts/DejaVuSans.ttf');
+        }
+        body { font-family: 'DejaVu Sans', Arial, sans-serif; }
+        h2 { text-align: center; margin-bottom: 1.5em; }
+        .contenu-extrait { border: 1.5px solid #333; padding: 1em; background: #fff; min-height: 200px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            direction: rtl;
+            background: #fff;
+            margin-bottom: 16px;
+            margin-top: 8px;
+        }
+        th, td {
+            border: 2px solid #333 !important;
+            padding: 8px 6px;
+            vertical-align: top;
+            text-align: right;
+            direction: rtl;
+            word-break: break-word;
+            font-size: 1em;
+            min-width: 80px;
+        }
+        th {
+            background: #f3f6fa;
+            font-weight: bold;
+            text-align: center;
+        }
+        tr {
+            height: 1.7em;
+        }
+        /* Largeur des colonnes pour 4 colonnes */
+        th:nth-child(1), td:nth-child(1) { width: 20%; }
+        th:nth-child(2), td:nth-child(2) { width: 40%; }
+        th:nth-child(3), td:nth-child(3) { width: 20%; }
+        th:nth-child(4), td:nth-child(4) { width: 20%; }
+        .amendements-header-table { background: #f3f6fa; }
+        u { text-decoration: underline; }
+        s, del { text-decoration: line-through; }
+        strong { font-weight: bold; }
+        em { font-style: italic; }
+        span.red { color: #ff0000; }
+        span.blue { color: #0000ff; }
+        span.green { color: #008000; }
+        span.orange { color: #FFA500; }
+        span.purple { color: #800080; }
+        span.yellow { color: #FFFF00; }
+        div[style*="text-align:center"], p[style*="text-align:center"] {
+            text-align: center !important;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        [dir="rtl"] { direction: rtl; text-align: right; }
+        td table {
+            width: auto !important;
+            table-layout: auto !important;
+            margin: 0;
+            border: 1.5px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <h2>Extrait du fichier : {{ fichier.fichier.name|cut:'amendements_uploads/' }}</h2>
+    <div class="contenu-extrait">
+        {{ extracted_content|safe }}
+    </div>
+</body>
+</html> 

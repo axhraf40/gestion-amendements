@@ -1,0 +1,30 @@
+{% extends 'charge_amendements/base.html' %}
+{% block content %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success" style="color:green; text-align:center; margin-bottom:15px;">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+  <h2>Mes fichiers d'amendement</h2>
+  <table style="width:100%;margin-top:20px;">
+    <tr>
+      <th>Nom du fichier</th>
+      <th>Date d'upload</th>
+      <th>Actions</th>
+    </tr>
+    {% for fichier in fichiers %}
+    <tr>
+      <td>{{ fichier.fichier.name|cut:'amendements_uploads/' }}</td> 
+      <td>{{ fichier.date_upload|date:"d/m/Y H:i" }}</td>
+      <td>
+        <a href="{% url 'fichier_mammoth' fichier.id %}">Voir le contenu extrait</a> |
+        <a href="{% url 'modifier_fichier_extrait' fichier.id %}" class="btn btn-warning btn-sm">Modifier</a> |
+        <form method="post" action="{% url 'supprimer_fichier_amendement' fichier.id %}" style="display:inline;" onsubmit="return confirm('Supprimer ce fichier ?');">{% csrf_token %}<button type="submit" class="link-btn">Supprimer</button></form> |
+        <a href="{% url 'export_pdf_amendement' fichier.id %}" class="btn btn-info btn-sm">Télécharger PDF</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">Aucun fichier uploadé.</td></tr>
+    {% endfor %}
+  </table>
+{% endblock %} 

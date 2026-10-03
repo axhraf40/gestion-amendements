@@ -1,0 +1,12 @@
+{% extends 'charge_amendements/base.html' %}
+{% block content %}
+  <div class="form-card">
+    <h2>Mon profil</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Mettre à jour</button>
+    </form>
+    <a class="main-btn" href="{% url 'change_password' %}">Changer le mot de passe</a>
+  </div>
+{% endblock %} 

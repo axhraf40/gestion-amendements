@@ -1,0 +1,609 @@
+/* =========================
+   Palette de couleurs
+=========================== */
+:root {
+  --main-bg: #F4F6F8;
+  --main-color: #2C3E50;
+  --secondary-color: #2980B9;
+  --accent: #E67E22;
+  --text-main: #222;
+  --text-secondary: #555;
+  --success: #27ae60;
+  --error: #c0392b;
+  --white: #fff;
+  --border: #e1e4e8;
+  --shadow: 0 4px 24px rgba(44,62,80,0.10);
+  --radius: 14px;
+}
+
+/* =========================
+   Reset & Base
+=========================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  background: var(--main-bg);
+  color: var(--text-main);
+  line-height: 1.6;
+  min-height: 100vh;
+  letter-spacing: 0.01em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--main-color);
+  margin-bottom: 0.5em;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+p {
+  margin-bottom: 1em;
+  color: var(--text-secondary);
+}
+
+/* =========================
+   Header
+=========================== */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5em 0 1.5em 0;
+  background: linear-gradient(90deg, #f7fafc 60%, #eaf1f7 100%);
+  border-bottom: 2px solid #e0e0e0;
+  box-shadow: var(--shadow);
+}
+.header h1 {
+  font-size: 2.1em;
+  font-weight: 700;
+  margin-top: 1em;
+  letter-spacing: 0.02em;
+}
+
+.logo-large {
+  display: block;
+  margin: 0 auto;
+  max-width: 72px;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: #fff;
+}
+
+/* =========================
+   Navigation
+=========================== */
+nav, .navbar {
+  background: var(--main-color);
+  color: var(--white);
+  padding: 0.7em 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+}
+.nav-container {
+  display: flex;
+  gap: 1.2em;
+}
+nav a, .navbar a, .nav-link, .navbar .btn {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.6em 1.4em;
+  border-radius: var(--radius);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  background: transparent;
+  display: inline-block;
+}
+nav a:hover, .navbar a:hover, .nav-link:hover, .navbar .btn:hover {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+}
+
+/* =========================
+   Boutons
+=========================== */
+button, .btn {
+  background: var(--secondary-color);
+  color: var(--white);
+  border: none;
+  padding: 0.7em 1.5em;
+  border-radius: var(--radius);
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  margin: 0.2em 0.2em;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+}
+button:hover, .btn:hover {
+  background: var(--accent);
+  box-shadow: 0 4px 16px rgba(44,62,80,0.10);
+  transform: translateY(-2px) scale(1.03);
+}
+.btn-secondary {
+  background: var(--main-color);
+}
+.btn-secondary:hover {
+  background: var(--secondary-color);
+}
+.btn-wide {
+  width: 80%;
+  min-width: 180px;
+  max-width: 320px;
+  margin: 0 auto;
+  display: block;
+}
+
+/* =========================
+   Formulaires
+=========================== */
+form {
+  background: var(--white);
+  padding: 2.2em 2em 2em 2em;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  max-width: 500px;
+  margin: 2em auto;
+}
+label {
+  display: block;
+  margin-bottom: 0.5em;
+  color: var(--main-color);
+  font-weight: 500;
+}
+input, select, textarea {
+  width: 100%;
+  padding: 0.7em;
+  margin-bottom: 1.2em;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 1em;
+  background: #fafbfc;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--secondary-color);
+  outline: none;
+  box-shadow: 0 0 0 2px #cce3fa;
+}
+
+/* =========================
+   Tableaux
+=========================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  margin: 2em 0;
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+th, td {
+  padding: 1em;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+th {
+  background: var(--main-color);
+  color: var(--white);
+  font-weight: 600;
+}
+tr:nth-child(even) {
+  background: #f8fafd;
+}
+
+/* =========================
+   Messages (succès, erreur)
+=========================== */
+.alert, .message {
+  padding: 1em 1.5em;
+  border-radius: var(--radius);
+  margin: 1em 0;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+}
+.alert-success {
+  background: #eafaf1;
+  color: var(--success);
+  border: 1px solid #b7eacb;
+}
+.alert-error {
+  background: #faeaea;
+  color: var(--error);
+  border: 1px solid #eab7b7;
+}
+
+/* =========================
+   Footer
+=========================== */
+footer {
+  background: var(--main-color);
+  color: var(--white);
+  text-align: center;
+  padding: 1.2em 0;
+  margin-top: 3em;
+  border-radius: 0 0 var(--radius) var(--radius);
+  box-shadow: 0 -2px 8px rgba(44,62,80,0.04);
+}
+
+/* =========================
+   Divers
+=========================== */
+.container {
+  max-width: 100vw !important;
+  width: 100vw !important;
+  margin: 0 auto;
+  padding: 2em 0;
+}
+.card {
+  max-width: 90vw !important;
+  width: 90vw !important;
+  margin: 2em auto !important;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2.5em 2em 2.5em 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.card .extracted-table, .card .extracted-content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+.card table,
+.card .extracted-table table,
+.card .extracted-content table {
+  margin: 0 auto;
+  width: 98%;
+  max-width: 100%;
+  min-width: 700px;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(44,62,80,0.10);
+}
+
+/* Styles pour les tableaux extraits Word */
+.am-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    direction: rtl;
+    background: #fff;
+    margin-bottom: 32px;
+    margin-top: 24px;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(44,62,80,0.10);
+    overflow: hidden;
+    border: 1.5px solid #e1e4e8;
+    transition: box-shadow 0.2s;
+}
+.am-table:hover {
+    box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+    border-color: var(--secondary-color);
+}
+.am-table th, .am-table td {
+    border: 1px solid #e1e4e8;
+    padding: 12px 10px;
+    vertical-align: top;
+    text-align: right;
+    word-break: break-word;
+    font-size: 1.05em;
+    min-width: 80px;
+    background: #fcfcfc;
+    transition: background 0.2s;
+}
+.am-table th {
+    background: linear-gradient(90deg, #f3f6fa 80%, #eaf1f7 100%);
+    font-weight: bold;
+    color: var(--main-color);
+    border-bottom: 2px solid var(--secondary-color);
+}
+.am-table tr {
+    height: 1.7em;
+    transition: background 0.2s;
+}
+.am-table tr:nth-child(even) td {
+    background: #f7fafd;
+}
+.am-table tr:nth-child(odd) td {
+    background: #fcfcfc;
+}
+.am-table td {
+    border-left: 2px solid #f0f0f0;
+}
+.am-table tr:hover td {
+    background: #eaf6ff;
+}
+.am-table tr:first-child td, .am-table tr:first-child th {
+    width: 33%;
+}
+
+/* Séparation visuelle autour des tableaux extraits */
+.am-table-container {
+    background: #f4f8fb;
+    border-radius: 22px;
+    box-shadow: 0 2px 12px rgba(44,62,80,0.07);
+    padding: 24px 18px;
+    margin: 32px 0;
+}
+
+/* Forcer le style sur tous les tableaux extraits dans la zone d'extraction */
+.card table,
+.card .extracted-table table,
+.card .extracted-content table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    direction: rtl;
+    background: #fff;
+    margin-bottom: 32px;
+    margin-top: 24px;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(44,62,80,0.10);
+    overflow: hidden;
+    border: 1.5px solid #e1e4e8;
+    transition: box-shadow 0.2s;
+}
+.card table:hover,
+.card .extracted-table table:hover,
+.card .extracted-content table:hover {
+    box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+    border-color: var(--secondary-color);
+}
+.card table th, .card table td,
+.card .extracted-table table th, .card .extracted-table table td,
+.card .extracted-content table th, .card .extracted-content table td {
+    border: 1px solid #e1e4e8;
+    padding: 12px 10px;
+    vertical-align: top;
+    text-align: right;
+    word-break: break-word;
+    font-size: 1.05em;
+    min-width: 80px;
+    background: #fcfcfc;
+    transition: background 0.2s;
+}
+.card table th,
+.card .extracted-table table th,
+.card .extracted-content table th {
+    background: linear-gradient(90deg, #f3f6fa 80%, #eaf1f7 100%);
+    font-weight: bold;
+    color: var(--main-color);
+    border-bottom: 2px solid var(--secondary-color);
+}
+.card table tr,
+.card .extracted-table table tr,
+.card .extracted-content table tr {
+    height: 1.7em;
+    transition: background 0.2s;
+}
+.card table tr:nth-child(even) td,
+.card .extracted-table table tr:nth-child(even) td,
+.card .extracted-content table tr:nth-child(even) td {
+    background: #f7fafd;
+}
+.card table tr:nth-child(odd) td,
+.card .extracted-table table tr:nth-child(odd) td,
+.card .extracted-content table tr:nth-child(odd) td {
+    background: #fcfcfc;
+}
+.card table td,
+.card .extracted-table table td,
+.card .extracted-content table td {
+    border-left: 2px solid #f0f0f0;
+}
+.card table tr:hover td,
+.card .extracted-table table tr:hover td,
+.card .extracted-content table tr:hover td {
+    background: #eaf6ff;
+}
+
+/* Séparation visuelle autour des tableaux extraits */
+.card .extracted-table, .card .extracted-content {
+    background: #f4f8fb;
+    border-radius: 22px;
+    box-shadow: 0 2px 12px rgba(44,62,80,0.07);
+    padding: 24px 18px;
+    margin: 32px 0;
+}
+
+/* Forcer tous les conteneurs principaux à occuper toute la largeur */
+.container, .card, .extracted-table, .extracted-content, .main-content, .content {
+  max-width: 100vw !important;
+  width: 100vw !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box;
+}
+
+/* Ajouter un scroll horizontal si besoin */
+.container, .card, .extracted-table, .extracted-content, .main-content, .content {
+  overflow-x: auto !important;
+}
+
+/* Les tableaux extraits prennent toute la largeur possible */
+.container table, .card table, .extracted-table table, .extracted-content table {
+  min-width: 1200px;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Carte principale élargie et centrée */
+.container > form, .container > div, .container > form > div, .container > .main-card {
+  max-width: 95vw;
+  width: 95vw;
+  margin: 2em auto;
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 6px 32px rgba(44,62,80,0.10);
+  padding: 2.5em 2em 2.5em 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 200px;
+}
+
+/* Tableaux adaptatifs dynamiques */
+.container table,
+.container table table,
+.card table,
+.card .extracted-table table,
+.card .extracted-content table {
+  width: auto !important;
+  max-width: 100% !important;
+  min-width: unset !important;
+  table-layout: auto !important;
+  margin: 1.5em auto;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(44,62,80,0.07);
+  background: #fcfcfc;
+}
+
+.container table th, .container table td,
+.card table th, .card table td,
+.card .extracted-table table th, .card .extracted-table table td,
+.card .extracted-content table th, .card .extracted-content table td {
+  padding: 12px 10px;
+  font-size: 1.05em;
+  text-align: right;
+  word-break: break-word;
+  white-space: normal;
+  vertical-align: top;
+}
+
+/* Padding horizontal pour éviter que le contenu ne touche les bords */
+.container > form > div, .container > div > div, .container > form, .container > div {
+  padding-left: 2vw;
+  padding-right: 2vw;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .container {
+    max-width: 100vw;
+    width: 100vw;
+    padding: 1em 0.2em;
+  }
+  .card {
+    max-width: 98vw !important;
+    width: 98vw !important;
+    padding: 1.2em 0.5em 1.2em 0.5em;
+  }
+  .card .extracted-table, .card .extracted-content {
+    padding: 12px 2px;
+  }
+  .card table,
+  .card .extracted-table table,
+  .card .extracted-content table {
+    min-width: 400px;
+    width: 99%;
+  }
+  .container table, .card table, .extracted-table table, .extracted-content table {
+    min-width: 700px;
+  }
+  .container > form, .container > div, .container > form > div, .container > .main-card {
+    max-width: 99vw;
+    width: 99vw;
+    padding: 1.2em 0.5em 1.2em 0.5em;
+  }
+  .container table, .container table table {
+    min-width: 300px;
+    width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  nav, .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1em;
+  }
+  .nav-container {
+    flex-direction: column;
+    gap: 0.5em;
+    width: 100%;
+  }
+  table, thead, tbody, th, td, tr {
+    display: block;
+    width: 100%;
+  }
+  th, td {
+    padding: 0.7em 0.5em;
+  }
+  form {
+    padding: 0.5em;
+  }
+  .am-table, .am-table thead, .am-table tbody, .am-table th, .am-table td, .am-table tr {
+    display: block;
+    width: 100%;
+  }
+  .am-table th, .am-table td {
+    padding: 10px 4px;
+    font-size: 0.95em;
+    min-width: unset;
+  }
+  .am-table tr {
+    margin-bottom: 8px;
+  }
+  .am-table-container {
+    padding: 6px 2px;
+  }
+  .card table, .card table thead, .card table tbody, .card table th, .card table td, .card table tr,
+  .card .extracted-table table, .card .extracted-table table thead, .card .extracted-table table tbody, .card .extracted-table table th, .card .extracted-table table td, .card .extracted-table table tr,
+  .card .extracted-content table, .card .extracted-content table thead, .card .extracted-content table tbody, .card .extracted-content table th, .card .extracted-content table td, .card .extracted-content table tr {
+    display: block;
+    width: 100%;
+  }
+  .card table th, .card table td,
+  .card .extracted-table table th, .card .extracted-table table td,
+  .card .extracted-content table th, .card .extracted-content table td {
+    padding: 10px 4px;
+    font-size: 0.95em;
+    min-width: unset;
+  }
+  .card table tr,
+  .card .extracted-table table tr,
+  .card .extracted-content table tr {
+    margin-bottom: 8px;
+  }
+  .card .extracted-table, .card .extracted-content {
+    padding: 6px 2px;
+  }
+  .container > form, .container > div, .container > form > div, .container > .main-card {
+    max-width: 100vw;
+    width: 100vw;
+    padding: 0.5em 0.1em 0.5em 0.1em;
+  }
+  .container table, .container table table {
+    min-width: 200px;
+    width: 100%;
+  }
+} 
+/* Delete action rendered as a POST form, styled like a link */
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+}
