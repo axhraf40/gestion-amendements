@@ -5,17 +5,13 @@
     <title>Extrait Amendement PDF</title>
     <style>
         @page { size: A4 landscape; }
-        @font-face {
-            font-family: 'DejaVu Sans';
-            src: url('file:///C:/Users/kh/Desktop/stage/stage/amendements/static/fonts/DejaVuSans.ttf');
-        }
-        body { font-family: 'DejaVu Sans', Arial, sans-serif; }
+        body { font-family: Arial, 'DejaVu Sans', sans-serif; font-size: 14px; }
         h2 { text-align: center; margin-bottom: 1.5em; }
         .contenu-extrait { border: 1.5px solid #333; padding: 1em; background: #fff; min-height: 200px; }
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed;
+            table-layout: auto;
             direction: rtl;
             background: #fff;
             margin-bottom: 16px;
@@ -27,9 +23,10 @@
             vertical-align: top;
             text-align: right;
             direction: rtl;
-            word-break: break-word;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            white-space: pre-line;
             font-size: 1em;
-            min-width: 80px;
         }
         th {
             background: #f3f6fa;
@@ -39,16 +36,10 @@
         tr {
             height: 1.7em;
         }
-        /* Largeur des colonnes pour 4 colonnes */
-        th:nth-child(1), td:nth-child(1) { width: 20%; }
-        th:nth-child(2), td:nth-child(2) { width: 40%; }
-        th:nth-child(3), td:nth-child(3) { width: 20%; }
-        th:nth-child(4), td:nth-child(4) { width: 20%; }
-        .amendements-header-table { background: #f3f6fa; }
         u { text-decoration: underline; }
         s, del { text-decoration: line-through; }
-        strong { font-weight: bold; }
-        em { font-style: italic; }
+        strong, b { font-weight: bold; }
+        em, i { font-style: italic; }
         span.red { color: #ff0000; }
         span.blue { color: #0000ff; }
         span.green { color: #008000; }
@@ -61,11 +52,8 @@
             margin-right: auto;
         }
         [dir="rtl"] { direction: rtl; text-align: right; }
-        td table {
-            width: auto !important;
-            table-layout: auto !important;
-            margin: 0;
-            border: 1.5px solid #333;
+        table, table * {
+            font-size: 1em;
         }
     </style>
 </head>
@@ -74,5 +62,10 @@
     <div class="contenu-extrait">
         {{ extracted_content|safe }}
     </div>
+    <p>
+      <span class="red">Texte rouge (classe)</span>
+      <span style="color:blue">Texte bleu (inline)</span>
+      <span class="green">Texte vert (classe)</span>
+    </p>
 </body>
 </html> 

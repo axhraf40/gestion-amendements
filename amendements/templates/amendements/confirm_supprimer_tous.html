@@ -1,0 +1,10 @@
+{% extends 'charge_amendements/base.html' %}
+{% block content %}
+  <h2 style="color:red; text-align:center;">Confirmer la suppression de tous vos fichiers</h2>
+  <p style="text-align:center; margin:30px 0; font-size:1.1em;">Êtes-vous sûr de vouloir supprimer <strong>tous</strong> vos fichiers d'amendement ?<br>Cette action est <span style="color:red; font-weight:bold;">irréversible</span>.</p>
+  <form method="post" style="text-align:center;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger" style="font-size:1.1em; padding:10px 30px;">Oui, supprimer tous mes fichiers</button>
+    <a href="{% url 'fichiers_amendements' %}" class="btn btn-secondary" style="margin-left:20px;">Annuler</a>
+  </form>
+{% endblock %} 

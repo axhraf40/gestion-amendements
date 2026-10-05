@@ -1,0 +1,14 @@
+{% extends 'charge_amendements/base.html' %}
+{% block content %}
+  <h2>Renommer le fichier</h2>
+  <div style="margin-bottom:20px;">
+    <strong>Fichier d'origine :</strong> {{ fichier.fichier.name|cut:'amendements_uploads/' }}
+  </div>
+  <form method="post" style="max-width:400px;margin:auto;">
+    {% csrf_token %}
+    <label for="nom_personnalise">Nouveau nom&nbsp;:</label>
+    <input type="text" name="nom_personnalise" id="nom_personnalise" value="{{ fichier.nom_personnalise|default_if_none:'' }}" class="form-control" style="width:100%;margin-bottom:15px;" required>
+    <button type="submit" class="btn btn-success">Valider</button>
+    <a href="{% url 'fichiers_amendements' %}" class="btn btn-secondary">Annuler</a>
+  </form>
+{% endblock %} 

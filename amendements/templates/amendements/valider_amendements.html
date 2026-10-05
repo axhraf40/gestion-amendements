@@ -6,20 +6,6 @@
       <strong>Fichier chargé :</strong> {{ fichier_obj.fichier.name|cut:'amendements_uploads/' }}
     </div>
   {% endif %}
-  <style>
-    /* Respecter l'alignement centré du HTML extrait */
-    div[style*="text-align:center"], p[style*="text-align:center"] {
-        text-align: center !important;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    span.red { color: #ff0000; }
-    span.blue { color: #0000ff; }
-    span.green { color: #008000; }
-    span.orange { color: #FFA500; }
-    span.purple { color: #800080; }
-    span.yellow { color: #FFFF00; }
-  </style>
   <form method="post" style="text-align:center; margin-top:30px;">
     {% csrf_token %}
     {% if extracted_content %}
@@ -34,4 +20,4 @@
       <p style="color:red;text-align:center;">Aucun contenu extrait du fichier.</p>
     {% endif %}
   </form>
-{% endblock %} 
+{% endblock %}

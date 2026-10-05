@@ -1,0 +1,116 @@
+{% extends 'charge_amendements/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Champs détectés automatiquement - Amendement {{ amendement.numero_modification }}</h2>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Informations de l'amendement</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Numéro de modification:</strong> {{ amendement.numero_modification }}</p>
+                            <p><strong>Article:</strong> {{ amendement.article }}</p>
+                            <p><strong>Numéro d'article:</strong> {{ amendement.numero_article }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Type de modification:</strong> {{ amendement.type_modification|default:"Non spécifié" }}</p>
+                            <p><strong>Nom de la loi:</strong> {{ amendement.nom_loi }}</p>
+                            <p><strong>Date d'insertion:</strong> {{ amendement.date_insertion|date:"d/m/Y H:i" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if champs_detectes %}
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5>Champs détectés par l'IA</h5>
+                        <a href="{% url 're_detecter_champs' amendement.id %}" class="btn btn-warning btn-sm">
+                            <i class="fas fa-sync-alt"></i> Re-détecter
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for champ, donnees in champs_detectes.items %}
+                                <div class="col-md-6 mb-3">
+                                    <div class="card border-primary">
+                                        <div class="card-header bg-primary text-white">
+                                            <h6 class="mb-0">
+                                                {{ champ|title }}
+                                                {% if donnees.confidence %}
+                                                    <span class="badge badge-light float-right">
+                                                        {{ donnees.confidence|floatformat:2 }}
+                                                    </span>
+                                                {% endif %}
+                                            </h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">{{ donnees.value }}</p>
+                                            {% if donnees.method %}
+                                                <small class="text-muted">
+                                                    Méthode: {{ donnees.method }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <h5>Aucun champ détecté</h5>
+                    <p>Aucun champ n'a été détecté automatiquement pour cet amendement.</p>
+                    <a href="{% url 're_detecter_champs' amendement.id %}" class="btn btn-primary">
+                        <i class="fas fa-magic"></i> Détecter les champs
+                    </a>
+                </div>
+            {% endif %}
+
+            <div class="mt-4">
+                <a href="{% url 'fichiers_amendements' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Retour aux fichiers
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.card-header {
+    border-radius: 8px 8px 0 0 !important;
+}
+
+.badge {
+    font-size: 0.8em;
+}
+
+.border-primary {
+    border-color: #007bff !important;
+}
+
+.bg-primary {
+    background-color: #007bff !important;
+}
+
+.alert {
+    border-radius: 8px;
+}
+
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+}
+</style>
+{% endblock %} 

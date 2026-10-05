@@ -1,0 +1,164 @@
+{% extends 'charge_amendements/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Statistiques de détection - {{ fichier.nom_personnalise|default:fichier.fichier.name }}</h2>
+            
+            <!-- Statistiques générales -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body text-center">
+                            <h4>{{ total_amendements }}</h4>
+                            <p>Total amendements</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body text-center">
+                            <h4>{{ amendements_avec_champs }}</h4>
+                            <p>Avec champs détectés</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body text-center">
+                            <h4>{{ amendements_sans_champs }}</h4>
+                            <p>Sans champs détectés</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body text-center">
+                            <h4>{{ pourcentage_detection|floatformat:1 }}%</h4>
+                            <p>Taux de détection</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistiques par champ -->
+            {% if champs_stats %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Détail par type de champ</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Champ</th>
+                                    <th>Nombre détecté</th>
+                                    <th>Confiance moyenne</th>
+                                    <th>Méthodes utilisées</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for champ, stats in champs_stats.items %}
+                                <tr>
+                                    <td><strong>{{ champ|title }}</strong></td>
+                                    <td>{{ stats.count }}</td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" 
+                                                 style="width: {{ stats.avg_confidence|floatformat:0 }}%">
+                                                {{ stats.avg_confidence|floatformat:2 }}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% for method, count in stats.methods.items %}
+                                            <span class="badge badge-secondary">{{ method }}: {{ count }}</span>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Liste des amendements -->
+            <div class="card">
+                <div class="card-header">
+                    <h5>Détail des amendements</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Numéro</th>
+                                    <th>Article</th>
+                                    <th>Champs détectés</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for amendement in amendements %}
+                                <tr>
+                                    <td>{{ amendement.numero_modification }}</td>
+                                    <td>{{ amendement.article }}</td>
+                                    <td>
+                                        {% if amendement.champs_detectes %}
+                                            <span class="badge badge-success">{{ amendement.champs_detectes|length }} champs</span>
+                                        {% else %}
+                                            <span class="badge badge-warning">Aucun</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'afficher_champs_detectes' amendement.id %}" 
+                                           class="btn btn-sm btn-primary">
+                                            <i class="fas fa-eye"></i> Voir
+                                        </a>
+                                        <a href="{% url 're_detecter_champs' amendement.id %}" 
+                                           class="btn btn-sm btn-warning">
+                                            <i class="fas fa-sync-alt"></i> Re-détecter
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a href="{% url 'fichiers_amendements' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Retour aux fichiers
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.progress {
+    height: 20px;
+    border-radius: 10px;
+}
+
+.badge {
+    margin-right: 5px;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    border-top: none;
+}
+</style>
+{% endblock %} 

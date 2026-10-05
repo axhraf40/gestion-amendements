@@ -12,8 +12,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install system libraries for WeasyPrint
-        run: sudo apt-get update && sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0 fonts-noto-core
+      - name: Install LibreOffice (Word → HTML conversion)
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libreoffice-writer fonts-noto-core
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Django checks
@@ -25,4 +25,5 @@ jobs:
       - name: Run tests
         env:
           DJANGO_DEBUG: "True"
+          AI_PROVIDER: "none"   # the AI is mocked in the tests; no key is used in CI
         run: python manage.py test

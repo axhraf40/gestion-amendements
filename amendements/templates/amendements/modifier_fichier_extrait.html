@@ -4,9 +4,16 @@
   <div style="margin-bottom:20px;">
     <strong>Fichier :</strong> {{ fichier.fichier.name|cut:'amendements_uploads/' }}
   </div>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
   <form method="post" style="margin-top:20px;">
     {% csrf_token %}
-    <textarea id="wysiwyg-editor" name="extracted_content" rows="25" style="width:100%;font-family:monospace;font-size:1em;">{{ extracted_content }}</textarea>
+    <textarea id="wysiwyg-editor" name="extracted_content" rows="40" style="width:98%;font-family:monospace;font-size:1em;min-height:600px;max-width:1800px;">{{ extracted_content }}</textarea>
     <div style="margin-top:20px;">
       <button type="submit" class="btn btn-success">Enregistrer les modifications</button>
       <a href="{% url 'fichier_mammoth' fichier.id %}" class="btn btn-secondary">Annuler</a>
@@ -15,26 +22,39 @@
   <!-- TinyMCE CDN open source -->
   <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js"></script>
   <script>
-    tinymce.init({
-      selector: '#wysiwyg-editor',
-      language: 'fr_FR',
-      height: 600,
-      plugins: 'lists link table code directionality',
-      toolbar: 'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | ltr rtl | table | code',
-      menubar: false,
-      directionality: 'rtl',
-      content_style: 'body { font-family: DejaVu Sans, Arial, sans-serif; }',
-      valid_elements: '*[*]',
-      valid_styles: {
-        '*': 'color,background-color,font-weight,font-style,text-decoration,text-align,direction'
-      },
-      convert_fonts_to_spans: true,
-      forced_root_block: false,
-      entity_encoding: 'raw',
-      relative_urls: false,
-      remove_script_host: false,
-      branding: false
-    });
+    try {
+      tinymce.init({
+        selector: '#wysiwyg-editor',
+        language: 'fr_FR',
+        height: 900,
+        width: 1600,
+        plugins: 'lists link table code directionality',
+        toolbar: 'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | ltr rtl | table | code',
+        menubar: false,
+        directionality: 'rtl',
+        content_style: 'body { font-family: DejaVu Sans, Arial, sans-serif; }',
+        valid_elements: '*[*]',
+        valid_styles: {
+          '*': 'color,background-color,font-weight,font-style,text-decoration,text-align,direction'
+        },
+        convert_fonts_to_spans: true,
+        forced_root_block: false,
+        entity_encoding: 'raw',
+        relative_urls: false,
+        remove_script_host: false,
+        branding: false,
+        setup: function(editor) {
+          editor.on('init', function(e) {
+            // TinyMCE initialisé avec succès
+          });
+          editor.on('Error', function(e) {
+            alert("Erreur lors de l'initialisation de l'éditeur : " + e.message);
+          });
+        }
+      });
+    } catch (e) {
+      alert("Erreur lors du chargement de l'éditeur : " + e.message);
+    }
     // Forcer l'activation du champ si jamais il est désactivé ou readonly
     document.addEventListener('DOMContentLoaded', function() {
       var textarea = document.getElementById('wysiwyg-editor');

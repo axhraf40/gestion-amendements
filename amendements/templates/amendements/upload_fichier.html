@@ -17,10 +17,10 @@
       </tr>
       {% for fichier in fichiers %}
       <tr>
-        <td>{{ fichier.fichier.name|cut:'amendements_uploads/' }}</td>
+        <td><a href="{{ fichier.fichier.url }}">{{ fichier.fichier.name|cut:'amendements_uploads/' }}</a></td>
         <td>{{ fichier.date_upload|date:"d/m/Y H:i" }}</td>
         <td>
-          <form method="post" action="{% url 'supprimer_fichier_amendement' fichier.id %}" class="inline-form" onsubmit="return confirm('Supprimer ce fichier ?');">{% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">Supprimer</button></form>
+          <a href="{% url 'supprimer_fichier_amendement' fichier.id %}" onclick="return confirm('Supprimer ce fichier ?');">Supprimer</a>
         </td>
       </tr>
       {% endfor %}

@@ -6,6 +6,9 @@
     {% endfor %}
   {% endif %}
   <h2>Mes fichiers d'amendement</h2>
+  <div style="margin-bottom:20px; text-align:right;">
+    <a href="{% url 'supprimer_tous_fichiers_amendement' %}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer TOUS vos fichiers ? Cette action est irréversible.');">Supprimer tous mes fichiers</a>
+  </div>
   <table style="width:100%;margin-top:20px;">
     <tr>
       <th>Nom du fichier</th>
@@ -14,13 +17,24 @@
     </tr>
     {% for fichier in fichiers %}
     <tr>
-      <td>{{ fichier.fichier.name|cut:'amendements_uploads/' }}</td> 
+      <td>
+        {% if fichier.nom_personnalise %}
+          <span style="font-weight:bold; color:#1976d2;">{{ fichier.nom_personnalise }}</span>
+          <br><span style="font-size:0.9em; color:#888;">({{ fichier.fichier.name|cut:'amendements_uploads/' }})</span>
+        {% else %}
+          {{ fichier.fichier.name|cut:'amendements_uploads/' }}
+        {% endif %}
+      </td>
       <td>{{ fichier.date_upload|date:"d/m/Y H:i" }}</td>
       <td>
-        <a href="{% url 'fichier_mammoth' fichier.id %}">Voir le contenu extrait</a> |
+        <a href="{% url 'fichier_mammoth' fichier.id %}" class="btn btn-primary btn-sm">Voir le contenu extrait</a> |
         <a href="{% url 'modifier_fichier_extrait' fichier.id %}" class="btn btn-warning btn-sm">Modifier</a> |
-        <form method="post" action="{% url 'supprimer_fichier_amendement' fichier.id %}" class="inline-form" onsubmit="return confirm('Supprimer ce fichier ?');">{% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">Supprimer</button></form> |
-        <a href="{% url 'export_pdf_amendement' fichier.id %}" class="btn btn-info btn-sm">Télécharger PDF</a>
+        <a href="{% url 'renommer_fichier_amendement' fichier.id %}" class="btn btn-primary btn-sm">Renommer</a> |
+        <form method="post" action="{% url 'supprimer_fichier_amendement' fichier.id %}" style="display:inline; margin:0; padding:0; background:none; border:none; box-shadow:none;" onsubmit="return confirm('Supprimer ce fichier ?');">
+          {% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+        </form> |
+        <a href="{% url 'telecharger_pdf_libreoffice' fichier.id %}" class="btn btn-success btn-sm">Télécharger PDF</a> |
+        <a href="{% url 'statistiques_detection' fichier.id %}" class="btn btn-primary btn-sm">Champs détectés</a>
       </td>
     </tr>
     {% empty %}

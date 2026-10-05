@@ -180,28 +180,7 @@ input:focus, select:focus, textarea:focus {
 /* =========================
    Tableaux
 =========================== */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--white);
-  margin: 2em 0;
-  box-shadow: var(--shadow);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-th, td {
-  padding: 1em;
-  border: 1px solid var(--border);
-  text-align: left;
-}
-th {
-  background: var(--main-color);
-  color: var(--white);
-  font-weight: 600;
-}
-tr:nth-child(even) {
-  background: #f8fafd;
-}
+/* Styles supprimés pour revenir à l'affichage par défaut du navigateur */
 
 /* =========================
    Messages (succès, erreur)
@@ -597,19 +576,3 @@ footer {
     width: 100%;
   }
 } 
-/* Delete action: a small POST form shown inline in the actions column */
-form.inline-form {
-  display: inline;
-  background: none;
-  padding: 0;
-  margin: 0;
-  box-shadow: none;
-  max-width: none;
-}
-form.inline-form .btn-danger {
-  background: #c0392b;
-  margin: 0;
-}
-form.inline-form .btn-danger:hover {
-  background: #a93226;
-}
