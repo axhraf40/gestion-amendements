@@ -318,6 +318,52 @@ class UploadTests(TestCase):
             self.assertEqual(
                 self.client.get(f"/amendements/fichiers/{a.fichier.id}/statistiques-detection/").status_code, 200)
 
+    def test_pdf_telechargement_et_apercu(self):
+        self._upload("exemple_court.docx")
+        f = Amendement.objects.first().fichier
+        r = self.client.get(f"/amendements/amendements/{f.id}/telecharger_pdf_libreoffice/")
+        self.assertEqual(r.status_code, 200)
+        self.assertIn("attachment", r["Content-Disposition"])
+        self.assertTrue(b"".join(r.streaming_content).startswith(b"%PDF"))
+        r = self.client.get(f"/amendements/fichiers/{f.id}/apercu_pdf/")
+        self.assertEqual(r.status_code, 200)
+        self.assertContains(r, "?inline=1")
+        r = self.client.get(f"/amendements/amendements/{f.id}/telecharger_pdf_libreoffice/?inline=1")
+        self.assertIn("inline", r["Content-Disposition"])
+
+    def test_ancienne_page_upload_redirige(self):
+        r = self.client.get("/amendements/fichiers/upload/")
+        self.assertRedirects(r, "/amendements/upload/", fetch_redirect_response=False)
+
+
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
+class SansLibreOfficeTests(TestCase):
+    """Si LibreOffice est introuvable : message clair, jamais d'erreur 500."""
+
+    def setUp(self):
+        self.user = User.objects.create_user("u", password=get_random_string(20))
+        self.client.force_login(self.user)
+        self.p = mock.patch("amendements.views.get_soffice_path", return_value="/introuvable/soffice")
+        self.p.start()
+
+    def tearDown(self):
+        self.p.stop()
+
+    def test_upload_message_et_rien_enregistre(self):
+        from .models import AmendementFichier
+        fichier = SimpleUploadedFile("exemple.docx", (DATA / "exemple.docx").read_bytes())
+        r = self.client.post("/amendements/upload/", {"fichier": fichier})
+        self.assertEqual(r.status_code, 200)
+        self.assertContains(r, "LibreOffice est introuvable")
+        self.assertEqual(AmendementFichier.objects.count(), 0)
+
+    def test_pdf_message(self):
+        from .models import AmendementFichier
+        f = AmendementFichier.objects.create(utilisateur=self.user, fichier=SimpleUploadedFile("f.docx", b"x"))
+        r = self.client.get(f"/amendements/amendements/{f.id}/telecharger_pdf_libreoffice/", follow=True)
+        self.assertEqual(r.status_code, 200)
+        self.assertContains(r, "LibreOffice est introuvable")
+
 
 @skipUnless(os.environ.get("AI_LIVE_TEST") == "1", "Test IA réel désactivé (mettre AI_LIVE_TEST=1)")
 class IAReelleTests(TestCase):
@@ -352,7 +398,8 @@ class SecuriteTests(TestCase):
         for url in [f"/amendements/fichier_mammoth/{fid}/", f"/amendements/fichiers/{fid}/modifier/",
                     f"/amendements/fichiers/{fid}/renommer/",
                     f"/amendements/amendements/{fid}/telecharger_pdf_libreoffice/",
-                    f"/amendements/fichiers/{fid}/statistiques-detection/"]:
+                    f"/amendements/fichiers/{fid}/statistiques-detection/",
+                    f"/amendements/fichiers/{fid}/apercu_pdf/"]:
             with self.subTest(url=url):
                 self.assertEqual(self.client.get(url).status_code, 404)
         self.assertEqual(self.client.post(f"/amendements/fichiers/{fid}/supprimer/").status_code, 404)

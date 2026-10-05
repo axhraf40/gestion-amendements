@@ -67,7 +67,11 @@ def extract_html_content(docx_path):
         docx_path
     ]
     try:
-        subprocess.run(cmd, check=True)
+        subprocess.run(cmd, check=True, timeout=180)
+    except (FileNotFoundError, PermissionError):
+        raise RuntimeError("LibreOffice est introuvable. Installez-le ou indiquez son chemin dans SOFFICE_PATH (fichier .env).")
+    except subprocess.TimeoutExpired:
+        raise RuntimeError("La conversion du fichier Word a pris trop de temps (LibreOffice ne répond pas).")
     except subprocess.CalledProcessError as e:
         logging.error(f"Erreur lors de la conversion LibreOffice : {e}")
         raise RuntimeError("Erreur lors de la conversion du fichier Word en HTML. Veuillez vérifier que le fichier n'est pas corrompu et que LibreOffice est bien installé.")
@@ -451,7 +455,13 @@ def upload_amendement(request):
                     })
                 fichier_obj = AmendementFichier.objects.create(utilisateur=request.user, fichier=fichier)
                 fichier_obj.refresh_from_db()
-                html_extrait = extract_html_content(fichier_obj.fichier.path)
+                try:
+                    html_extrait = extract_html_content(fichier_obj.fichier.path)
+                except RuntimeError as e:
+                    fichier_obj.fichier.delete(save=False)
+                    fichier_obj.delete()
+                    messages.error(request, str(e))
+                    return render(request, 'amendements/upload.html', {'form': form, 'error': str(e)})
                 fichier_obj.extracted_content = html_extrait
                 fichier_obj.save()
                 nb = creer_amendements_depuis_html(html_extrait, request.user, fichier_obj)
@@ -550,21 +560,8 @@ def fichiers_amendements(request):
 
 @login_required
 def upload_fichier_amendement(request):
-    fichiers = AmendementFichier.objects.filter(utilisateur=request.user)
-    if fichiers.exists():
-        messages.error(request, "Vous avez déjà un fichier chargé. Supprimez-le ou modifiez-le avant d'en ajouter un nouveau.")
-        return redirect('fichiers_amendements')
-    if request.method == 'POST':
-        form = AmendementFichierForm(request.POST, request.FILES)
-        if form.is_valid():
-            fichier_obj = form.save(commit=False)
-            fichier_obj.utilisateur = request.user
-            fichier_obj.save()
-            messages.success(request, "Fichier uploadé avec succès.")
-            return redirect('fichiers_amendements')
-    else:
-        form = AmendementFichierForm()
-    return render(request, 'amendements/upload_fichier.html', {'form': form, 'fichiers': fichiers})
+    """Ancienne page d'upload sans extraction : redirige vers la page d'upload avec détection."""
+    return redirect('upload_amendement')
 
 @login_required
 @require_POST
@@ -637,10 +634,8 @@ def modifier_fichier_extrait(request, fichier_id):
 
 @login_required
 def afficher_pdf_amendement(request, fichier_id):
-    fichier_obj = get_object_or_404(AmendementFichier, id=fichier_id)
-    if fichier_obj.utilisateur != request.user:
-        return HttpResponseForbidden()
-    pdf_url = reverse('export_pdf_amendement', args=[fichier_id])
+    fichier_obj = get_object_or_404(AmendementFichier, id=fichier_id, utilisateur=request.user)
+    pdf_url = reverse('telecharger_pdf_libreoffice', args=[fichier_id]) + '?inline=1'
     return render(request, 'amendements/afficher_pdf.html', {
         'fichier_obj': fichier_obj,
         'pdf_url': pdf_url
@@ -695,7 +690,12 @@ def convert_docx_to_pdf(docx_path, output_dir):
         "--outdir", output_dir,
         docx_path
     ]
-    subprocess.run(cmd, check=True)
+    try:
+        subprocess.run(cmd, check=True, timeout=180)
+    except (FileNotFoundError, PermissionError):
+        raise RuntimeError("LibreOffice est introuvable. Installez-le ou indiquez son chemin dans SOFFICE_PATH (fichier .env).")
+    except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
+        raise RuntimeError("La conversion en PDF a échoué (LibreOffice).")
     base = os.path.splitext(os.path.basename(docx_path))[0]
     pdf_path = os.path.join(output_dir, base + ".pdf")
     return pdf_path
@@ -705,10 +705,16 @@ def telecharger_pdf_libreoffice(request, fichier_id):
     fichier_obj = get_object_or_404(AmendementFichier, id=fichier_id, utilisateur=request.user)
     docx_path = fichier_obj.fichier.path
     output_dir = os.path.dirname(docx_path)
-    pdf_path = convert_docx_to_pdf(docx_path, output_dir)
+    try:
+        pdf_path = convert_docx_to_pdf(docx_path, output_dir)
+    except RuntimeError as e:
+        messages.error(request, str(e))
+        return redirect('fichiers_amendements')
     if not os.path.exists(pdf_path):
-        raise Http404("PDF non généré")
-    return FileResponse(open(pdf_path, 'rb'), as_attachment=True, filename=os.path.basename(pdf_path))
+        messages.error(request, "Le PDF n'a pas pu être généré.")
+        return redirect('fichiers_amendements')
+    inline = request.GET.get('inline') == '1'  # affichage dans la page d'aperçu
+    return FileResponse(open(pdf_path, 'rb'), as_attachment=not inline, filename=os.path.basename(pdf_path))
 
 @login_required
 def afficher_champs_detectes(request, amendement_id):
